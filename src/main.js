@@ -33,7 +33,7 @@ homeButton.addEventListener('click', changeToHome);
 makeMyBook.addEventListener('click', makeBook);
 saveCoverButton.addEventListener('click', saveCover);
 savedView.addEventListener('dblclick', removeCover);
-
+window.addEventListener('load', onLoad);
 // Create your event handlers and other functions here 👇
 function hide(element) {
   element.classList.add('hidden')
@@ -43,6 +43,7 @@ function unhide(element) {
   element.classList.remove('hidden')
 }
 
+
 function addToSavedList(array) {
   for (var i = 0; i < array.length; i++) {
       coverSection.innerHTML += `<section class="mini-cover">
@@ -51,14 +52,21 @@ function addToSavedList(array) {
       <h3 class="tagline">A tale of <span class="tagline-1">${array[i].tagline1}</span> and <span class="tagline-2">${array[i].tagline2}</span></h3>
       <img class="overlay" src="./assets/overlay.png">
       </section>`;
-      }
-      document.querySelectorAll('.mini-cover').forEach(function(item) {
-        item.addEventListener('dblclick', function(event) {
-          return
-        })
-      });
+  }
+  var miniArray = document.getElementsByClassName('mini-cover')
+  for (i = 0; i < miniArray.length; i++) {
+    miniArray[i].addEventListener('dblclick', function(event) {
+      return;
+    });
+  }
 }
-
+  // addToSavedList original.
+  // document.querySelectorAll('.mini-cover').forEach(function(item) {
+  //   item.addEventListener('dblclick', function(event) {
+  //     return
+  //   })
+  // });
+  
 function changeToForm() {
   hide(mainCover);
   hide(saveCoverButton);
@@ -104,6 +112,9 @@ function makeBook() {
   event.preventDefault();
   var newBook = new Cover(coverInput.value, titleInput.value, firstDescriptorInput.value, secondDescriptorInput.value);
   savedCovers.push(newBook);
+  covers.push(newBook.cover) ;
+  titles.push(newBook.title);
+  descriptors.push(newBook.tagline1, newBook.tagline2);
   coverImg.src = newBook.cover;
   coverTitle.innerText = newBook.title;
   tagline1.innerText = newBook.tagline1;
@@ -127,13 +138,12 @@ function removeCover() {
   addToSavedList(savedCovers);
 }
 
-
-//change loading page
+function onLoad() {
 coverImg.src = covers[getRandomIndex(covers)];
 coverTitle.innerText = titles[getRandomIndex(titles)];
 tagline1.innerText = descriptors[getRandomIndex(descriptors)];
 tagline2.innerText = descriptors[getRandomIndex(descriptors)];
-
+}
 
 // We've provided one function to get you started
 
